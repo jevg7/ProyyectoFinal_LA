@@ -33,7 +33,27 @@ void loadMatches();
 bool isStudentDataEntered = false;
 bool isRegistrerDataEntered = false;
 
+bool isValidRegistrerMenuOption(const std::string &optionStr)
+{
+    std::regex menuRegex("^[1-3]$");
+    return std::regex_match(optionStr, menuRegex);
+    
+}
+
+bool isValidStudentMenuOption(const std::string &optionStr)
+{
+   std::regex menuRegex("^[1-4]$");
+    return std::regex_match(optionStr, menuRegex);
+}
+
+bool isValidMenuOption(const std::string &optionStr)
+{
+    std::regex menuRegex("^[1-3]$");
+    return std::regex_match(optionStr, menuRegex);
+}
+
 bool isValidDateFormat(const std::string &dateStr)
+
 {
     std::regex dateRegex("^(0[1-9]|[1-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/\\d{4}$");
     return std::regex_match(dateStr, dateRegex);
@@ -71,7 +91,7 @@ bool isValidCareer(const std::string &careerStr)
 
 bool isValidID(const std::string &idStr)
 {
-    std::regex idRegex("^[a-zA-Z0-9]{14}$");
+    std::regex idRegex("^[0-9]{3}-[0-9]{6}-[0-9]{4}[a-zA-Z]$");
     return std::regex_match(idStr, idRegex);
 }
 
@@ -168,12 +188,31 @@ void loadCounter()
 int menu()
 {
     int opt;
-    cout << "Bienvenido al sistema de control de partidos de Baloncesto" << endl;
-    cout << "!Vamos Jaguares!" << endl;
-    cout << "1. Modo estudiante" << endl;
-    cout << "2. Modo registrador" << endl;
-    cout << "3. Salir" << endl;
-    cin >> opt;
+
+    while (true)
+    {
+        string optStr;
+        cout << "Bienvenido al sistema de control de partidos de Baloncesto" << endl;
+        cout << "!Vamos Jaguares!" << endl;
+        cout << "1. Modo estudiante" << endl;
+        cout << "2. Modo registrador" << endl;
+        cout << "3. Salir" << endl;
+
+        cout << "Ingrese una opcion: ";
+        cin >> optStr;
+        system("cls");
+        if (isValidMenuOption(optStr))
+        {
+            opt = stoi(optStr);
+            break;
+        }
+        else
+        {
+            cout << "Ingrese una opcion valida\n";
+            system("pause");
+            system("cls");
+        }
+    }
     return opt;
 }
 
@@ -312,7 +351,7 @@ void registrerdata()
 
     while (true)
     {
-        cout << "Ingrese su cedula (Sin guiones ni espacios)" << endl;
+        cout << "Ingrese su cedula (Con guiones)" << endl;
         cin >> persona2.ID;
         system("cls");
 
@@ -322,7 +361,7 @@ void registrerdata()
         }
         else
         {
-            cout << "Ingrese su cedula sin guion y sin espacio\n";
+            cout << "Ingrese en el formato indicado\n";
             system("pause");
             system("cls");
         }
@@ -353,42 +392,77 @@ void registrerdata()
 void studentOptions()
 {
     int opt;
+    while (true)
+    {
+        string optStr;
+        cout << "1. Ver datos" << endl;
+        cout << "2. Ver partidos" << endl;
+        cout << "3. Asistir a un partido" << endl;
+        cout << "4. Volver" << endl;
+        cout << "Ingrese una opcion: ";
+        cin >> optStr;
+        system("cls");
+        if (isValidStudentMenuOption(optStr))
+        {
+            opt = stoi(optStr);
+            break;
+        }
+        else
+        {
+            cout << "Ingrese una opcion valida\n";
+            system("pause");
+            system("cls");
+        }
+    }
     do
     {
-        cout << "1. Ver datos" << endl;
-        cout << "2. Partidos" << endl;
-        cout << "3. Asistencia" << endl;
-        cout << "4. Volver" << endl;
-        cin >> opt;
-        system("cls");
         switch (opt)
         {
         case 1:
             showstudentdata();
             system("pause");
             system("cls");
-
             break;
         case 2:
             showmatchdata();
             system("pause");
             system("cls");
-
             break;
         case 3:
             assisted();
             system("pause");
             system("cls");
-
             break;
         case 4:
-            return principal();
+            return;
             break;
         default:
             cout << "Opcion no valida" << endl;
             system("pause");
             system("cls");
             return studentOptions();
+        }
+        while (true)
+        {
+            string optStr;
+            cout << "1. Ver datos" << endl;
+            cout << "2. Ver partidos" << endl;
+            cout << "3. Asistir a un partido" << endl;
+            cout << "4. Volver" << endl;
+            cout << "Ingrese una opcion: ";
+            cin >> optStr;
+            system("cls");
+            if (isValidStudentMenuOption(optStr))
+            {
+                opt = stoi(optStr);
+                break;
+            }
+            else
+            {
+                cout << "Ingrese una opcion valida\n";
+                system("pause");
+                system("cls");
+            }
         }
     } while (opt != 4);
 }
@@ -508,17 +582,14 @@ void addmatch()
         partido[contador].ID = contador + 1;
 
         contador++;
-         saveMatches(); 
-        saveCounter(); 
+        saveMatches();
+        saveCounter();
 
         cout << "¿Desea ingresar otro partido? (s/n): ";
         cin >> choice;
-        if (choice == 's' || choice == 'S') {
-            
-        }
-    } while (choice == 's' || choice == 'S');
+        
+    } while (choice == 'si' || choice == 'Si');
 }
-
 
 void showmatchdata()
 {
@@ -538,13 +609,11 @@ void showmatchdata()
     contador = 0;
 }
 
-
-
 void assisted()
-{   
-    string tester= "";
+{
+    string tester = "";
     showmatchdata();
-    
+
     char choice;
     do
     {
@@ -569,10 +638,8 @@ void assisted()
         cout << "¿Desea ingresar otra asistencia? (s/n): ";
         cin >> choice;
         system("cls");
-        
-    } while (choice == 's' || choice == 'S');
 
-   
+    } while (choice == 'si' || choice == 'Si');
 }
 
 void registrerOptions()
@@ -580,24 +647,39 @@ void registrerOptions()
     int opt;
     do
     {
+        string optStr;
         cout << "1. Ver datos" << endl;
-        cout << "2. Agregar nuevo partido" << endl;
+        cout << "2. Ingresar partido" << endl;
         cout << "3. Volver" << endl;
-        cin >> opt;
+        cout << "Ingrese una opcion: ";
+        cin >> optStr;
         system("cls");
+        if (isValidRegistrerMenuOption(optStr))
+        {
+            opt = stoi(optStr);
+            break;
+        }
+        else
+        {
+            cout << "Ingrese una opcion valida\n";
+            system("pause");
+            system("cls");
+        }
+    } while (true);
+    
+    do
+    {
         switch (opt)
         {
         case 1:
             showregistrerdata();
             system("pause");
             system("cls");
-
             break;
         case 2:
             addmatch();
             system("pause");
             system("cls");
-
             break;
         case 3:
             return principal();
@@ -693,6 +775,5 @@ void loadMatches()
             contador++;
         }
         file.close();
-        
     }
 }
