@@ -28,21 +28,22 @@ void assisted();
 void saveMatches();
 void loadMatches();
 
+
 /*Validaciones*/
 
 bool isStudentDataEntered = false;
 bool isRegistrerDataEntered = false;
 
+
 bool isValidRegistrerMenuOption(const std::string &optionStr)
 {
     std::regex menuRegex("^[1-3]$");
     return std::regex_match(optionStr, menuRegex);
-    
 }
 
 bool isValidStudentMenuOption(const std::string &optionStr)
 {
-   std::regex menuRegex("^[1-4]$");
+    std::regex menuRegex("^[1-4]$");
     return std::regex_match(optionStr, menuRegex);
 }
 
@@ -587,8 +588,8 @@ void addmatch()
 
         cout << "¿Desea ingresar otro partido? (s/n): ";
         cin >> choice;
-        
-    } while (choice == 'si' || choice == 'Si');
+
+    } while (choice == 's' || choice == 'S');
 }
 
 void showmatchdata()
@@ -639,8 +640,9 @@ void assisted()
         cin >> choice;
         system("cls");
 
-    } while (choice == 'si' || choice == 'Si');
+    } while (choice == 's' || choice == 'S');
 }
+
 
 void registrerOptions()
 {
@@ -666,7 +668,7 @@ void registrerOptions()
             system("cls");
         }
     } while (true);
-    
+
     do
     {
         switch (opt)
