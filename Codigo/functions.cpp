@@ -635,7 +635,7 @@ void assisted()
                 system("pause");
             }
         }
-
+        cout  << "Usted asistio al partido" << endl;
         cout << "¿Desea ingresar otra asistencia? (s/n): ";
         cin >> choice;
         system("cls");
